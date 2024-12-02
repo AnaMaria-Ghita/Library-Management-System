@@ -150,6 +150,19 @@ public:
         return os;
     }
 
+      friend istream& operator>>(istream& is, User& user){
+        cout <<"Write the new first name: ";
+        delete[] user.fName;
+
+        char temp[100];
+        is>>temp;
+
+        user.fName = new char [strlen(temp)+1];
+        strcpy(user.fName, temp);
+
+        return is;
+    }
+
 
 };
 
