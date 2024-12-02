@@ -4,7 +4,7 @@ using namespace std;
 
 class Book {
 private:
-    int id;
+    int bookID;
     char* title;
     char* author;
     char* genre;
@@ -13,7 +13,7 @@ private:
 public:
     static int numberBooks;
     //constructors
-    Book(const int id, const char* title, const char* author, const char* genre, bool isAvailable): id(id), isAvailable(true), numberUsers(0){
+    Book(const int bookID, const char* title, const char* author, const char* genre, bool isAvailable): bookID(bookID), isAvailable(true), numberUsers(0){
         this->title=new char[strlen(title)+1];
         strcpy(this-> title, title);
        
@@ -25,7 +25,7 @@ public:
 
         numberBooks++;
     }
-    Book(): id(0), isAvailable(true), title(nullptr), author(nullptr), genre(nullptr), numberUsers(0){
+    Book(): bookID(0), isAvailable(true), title(nullptr), author(nullptr), genre(nullptr), numberUsers(0){
 
         numberBooks++;
     }
@@ -38,7 +38,7 @@ public:
 
     //constructor de afisare
     friend ostream& operator<<(ostream& os, Book& book){
-        os<<"ID: "<< book.id <<endl;
+        os<<"ID: "<< book.bookID <<endl;
         os<<"Title: "<<book.title<<endl;
         os<<"Author: "<<book.author<<endl;
         os<<"Genre: "<<book.genre<<endl;
@@ -83,6 +83,77 @@ public:
     
 };
 
+
+class User{
+private:
+    int userID;
+    char* fName;
+    char* lName;
+    int age;
+    int numberBooksBorr;
+    int* booksBorr;
+public:
+    User(int userID, const char* fName, const char* lName, int age, int numberBooksBorr, int* booksBorr): userID(userID), age(age), numberBooksBorr(numberBooksBorr){
+        this->fName=new char[strlen(fName)+1];
+        strcpy(this-> fName, fName);
+
+        this->lName=new char[strlen(lName)+1];
+        strcpy(this-> lName, lName);
+
+        this->booksBorr=new int[numberBooksBorr];
+        for (int i = 0; i < numberBooksBorr; i++)
+        {
+            this->booksBorr[i]=booksBorr[i];
+        }
+    }
+    User():userID(0), fName(nullptr), lName(nullptr), age(0), numberBooksBorr(0), booksBorr(nullptr){
+
+    } 
+    ~User(){
+        delete[] fName;
+        delete[] lName;
+        delete[] booksBorr;
+    }
+
+    //methods
+    void borrBook(int bookID){
+       
+        int* temp = new int[numberBooksBorr + 1];
+
+        for (int i = 0; i < numberBooksBorr; i++) {
+            temp[i] = booksBorr[i];
+        }
+
+        temp[numberBooksBorr] = bookID;
+
+        delete[] booksBorr;
+        booksBorr = temp;
+
+        numberBooksBorr++;
+
+        cout << "Book ID " << bookID << " borrowed by " << fName << " " << lName << "." << endl;
+    }
+
+     //constructor de afisare
+    friend ostream& operator<<(ostream& os, User& user){
+        os<<"User ID: "<<user.userID<<endl;
+        os<<"First name: "<< user.fName <<endl;
+        os<<"Last name: "<<user.lName<<endl;
+        os<<"Age: "<<user.age<<endl;
+        os<<"Number of books borrowed: " <<user.numberBooksBorr<<endl;
+        os<<"Books borrowed: ";
+        for (int i = 0; i < user.numberBooksBorr; i++)
+        {
+            os<<user.booksBorr[i] << ", ";
+        }
+
+        return os;
+    }
+
+
+};
+
+
 int Book::numberBooks = 0;
 
 int main(){
@@ -98,6 +169,11 @@ int main(){
    b1.checkAvailability();
    b1.checkNumberUsers();
    
+   //User(int id, const char* fname, const char* lName, int age, int numberBooksBorr, int* booksBorr)
+    int borrowedBooks[] = { 101, 102, 103 };
+    User user1(1, "Ana", "Ghita", 25, 3, borrowedBooks);
+    cout << user1 << endl;
+
 
    return 0;
 }
