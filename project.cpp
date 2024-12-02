@@ -12,7 +12,7 @@ private:
 public:
     static int numberBooks;
     //constructors
-    Book(const int id, const char* title, const char* author, char* genre, bool isAvailable): id(id), isAvailable(true){
+    Book(const int id, const char* title, const char* author, const char* genre, bool isAvailable): id(id), isAvailable(true){
         this->title=new char[strlen(title)+1];
         strcpy(this-> title, title);
        
@@ -24,15 +24,7 @@ public:
 
         numberBooks++;
     }
-    Book(): id(0), isAvailable(true){
-        this->title=new char[strlen("NA")+1];
-        strcpy(this-> title, "NA");
-       
-        this->author=new char[strlen("NA")+1];
-        strcpy(this-> author, "NA");
-
-        this->genre=new char[strlen("NA")+1];
-        strcpy(this-> genre, "NA");
+    Book(): id(0), isAvailable(true), title(nullptr), author(nullptr), genre(nullptr){
 
         numberBooks++;
     }
@@ -46,7 +38,7 @@ public:
 
 int Book::numberBooks = 0;
 int main(){
-
+    Book b1(100, "Alice's Adventures in Wonderland", "Lewis Carrol", "Fantasy", true );
 
     return 0;
 }
