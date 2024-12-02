@@ -9,11 +9,11 @@ private:
     char* author;
     char* genre;
     bool isAvailable;
+    int numberUsers;
 public:
     static int numberBooks;
-    static int numberUsers;
     //constructors
-    Book(const int id, const char* title, const char* author, const char* genre, bool isAvailable): id(id), isAvailable(true){
+    Book(const int id, const char* title, const char* author, const char* genre, bool isAvailable): id(id), isAvailable(true), numberUsers(0){
         this->title=new char[strlen(title)+1];
         strcpy(this-> title, title);
        
@@ -25,7 +25,7 @@ public:
 
         numberBooks++;
     }
-    Book(): id(0), isAvailable(true), title(nullptr), author(nullptr), genre(nullptr){
+    Book(): id(0), isAvailable(true), title(nullptr), author(nullptr), genre(nullptr), numberUsers(0){
 
         numberBooks++;
     }
@@ -49,6 +49,7 @@ public:
         else{
             os<<"Not available"<<endl;
         }
+        os<<"Number of users: "<<book.numberUsers<<endl;
 
         return os;
     }
@@ -61,26 +62,42 @@ public:
     }
 
     //methods
-     bool checkAvailability(){
-     return isAvailable;
+     void checkAvailability(){
+        if (isAvailable) {
+            cout << "Status: Available." << endl;
+        }
+        else {
+            cout << "Status: Not available." << endl;
+        }
     }
     void markBorrowed(){
         isAvailable=false;
+        numberUsers++;
     }
     void markReturned(){
         isAvailable=true; 
     }
-
+    void checkNumberUsers(){
+    cout << "Number of users: " << numberUsers << endl;
+    }
+    
 };
 
 int Book::numberBooks = 0;
-int Book::numberUsers = 0;
 
 int main(){
-    Book b1(100, "Alice's Adventures in Wonderland", "Lewis Carrol", "Fantasy", true );
-    cout << b1 << endl;
-    cin>>b1;
-    cout << b1;
+   Book b1(100, "Alice's Adventures in Wonderland", "Lewis Carrol", "Fantasy", true);
+   cout << b1 << endl;
+   cin >> b1;
+   cout << b1 << endl << endl;
 
-    return 0;
+   b1.checkAvailability();
+   b1.checkNumberUsers();
+
+   b1.markBorrowed();
+   b1.checkAvailability();
+   b1.checkNumberUsers();
+   
+
+   return 0;
 }
