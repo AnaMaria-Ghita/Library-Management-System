@@ -133,6 +133,23 @@ public:
 
         cout << "Book ID " << bookID << " borrowed by " << fName << " " << lName << "." << endl;
     }
+    void returnedBook(int bookID){
+        int* temp = new int[numberBooksBorr-1];
+
+        for (int i = 0; i < numberBooksBorr; i++)
+        {
+            if(booksBorr[i]!=bookID){
+                temp[i] = booksBorr[i];
+            }
+        }
+
+        delete[] booksBorr;
+        booksBorr = temp;
+        
+        numberBooksBorr--;
+
+        cout << "Book ID " << bookID << " returned by " << fName << " " << lName << "." << endl;
+    }
 
      //constructor de afisare
     friend ostream& operator<<(ostream& os, User& user){
@@ -186,7 +203,13 @@ int main(){
     int borrowedBooks[] = { 101, 102, 103 };
     User user1(1, "Ana", "Ghita", 25, 3, borrowedBooks);
     cout << user1 << endl;
+    cin >> user1;
 
+    cout << endl;
+    user1.borrBook(100);
+    cout << user1 << endl;
+    user1.returnedBook(100);
+    cout << user1 << endl;
 
    return 0;
 }
