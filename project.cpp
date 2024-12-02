@@ -34,11 +34,29 @@ public:
         delete[] author;
         delete[] genre;
     }
+
+    //constructor de citire
+    friend ostream& operator<<(ostream& os, Book& book){
+        os<<"ID: "<< book.id <<endl;
+        os<<"Title: "<<book.title<<endl;
+        os<<"Author: "<<book.author<<endl;
+        os<<"Genre: "<<book.genre<<endl;
+        os<<"Status: ";
+        if(book.isAvailable){
+            os<<"Available"<<endl;
+        }
+        else{
+            os<<"Not available"<<endl;
+        }
+
+        return os;
+    }
 };
 
 int Book::numberBooks = 0;
 int main(){
     Book b1(100, "Alice's Adventures in Wonderland", "Lewis Carrol", "Fantasy", true );
+    cout << b1 << endl;
 
     return 0;
 }
