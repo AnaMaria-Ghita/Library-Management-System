@@ -218,15 +218,15 @@ public:
 
     void displayBooks() const {
         for (int i = 0; i < numberBooks; i++) {
-            std::cout << *(books[i]);
-            std::cout << "-----------------" << endl;
+            cout << *(books[i]);
+            cout << "-----------------" << endl;
         }
     }
 
     void searchBookByID(int id) const {
         for (int i = 0; i < numberBooks; i++) {
             if (books[i]->getBookID() == id) {
-                std::cout << *(books[i]);
+                cout << *(books[i]);
                 return;
             }
         }
@@ -238,11 +238,11 @@ public:
             if (books[i]->getBookID() == id) {
                 if (books[i]->checkAvailability()) {
                     books[i]->markBorrowed();
-                    std::cout << "Book with ID " << id << " has been borrowed." << endl;
+                    cout << "Book with ID " << id << " has been borrowed." << endl;
                     numberUsers++;
                 }
                 else {
-                    std::cout << "Book with ID " << id << " is already borrowed." << endl;
+                    cout << "Book with ID " << id << " is already borrowed." << endl;
                 }
                 return;
             }
@@ -255,10 +255,10 @@ public:
             if (books[i]->getBookID() == id) {
                 if (!books[i]->checkAvailability()) {
                     books[i]->markReturned();
-                    std::cout << "Book with ID " << id << " has been returned." << endl;
+                    cout << "Book with ID " << id << " has been returned." << endl;
                 }
                 else {
-                    std::cout << "Book with ID " << id << " was not borrowed." << endl;
+                    cout << "Book with ID " << id << " was not borrowed." << endl;
                 }
                 return;
             }
