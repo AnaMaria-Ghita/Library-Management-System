@@ -183,6 +183,31 @@ public:
 
 };
 
+class Library{
+private:
+    char* libraryName;
+    char* location;
+    int numberUsers;
+    int* users;
+public:
+    static int numberBooks;
+    Library(const char* libraryName, const char* location, int numberUsers, int* users){
+        this->libraryName=new char[strlen(libraryName)+1];
+        strcpy(this-> libraryName, libraryName);
+
+        this->location=new char[strlen(location)+1];
+        strcpy(this-> location, location);
+
+        this->numberUsers=numberUsers;
+
+        this->users=new int [numberUsers];
+        for (int i = 0; i < numberUsers; i++)
+        {
+            users[i]=users[i];
+        }
+        
+    }
+};
 
 int Book::numberBooks = 0;
 
