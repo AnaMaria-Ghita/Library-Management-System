@@ -62,14 +62,11 @@ public:
     }
 
     //methods
-     void checkAvailability(){
-        if (isAvailable) {
-            cout << "Status: Available." << endl;
-        }
-        else {
-            cout << "Status: Not available." << endl;
-        }
-    }
+     bool checkAvailability() const { 
+
+        return isAvailable; 
+     }
+
     void markBorrowed(){
         isAvailable=false;
         numberUsers++;
@@ -80,7 +77,11 @@ public:
     void checkNumberUsers(){
     cout << "Number of users: " << numberUsers << endl;
     }
-    
+
+    int getBookID() const { 
+        return bookID;
+    }
+
 };
 
 
@@ -183,29 +184,86 @@ public:
 
 };
 
-class Library{
+class Library {
 private:
-    char* libraryName;
-    char* location;
+    Book** books;
+    User** users;
     int numberUsers;
-    int* users;
+    int numberBooks;
 public:
-    static int numberBooks;
-    Library(const char* libraryName, const char* location, int numberUsers, int* users){
-        this->libraryName=new char[strlen(libraryName)+1];
-        strcpy(this-> libraryName, libraryName);
+    Library() {
+        this->books = nullptr;
+        this->users = nullptr;
+        this->numberBooks = 0;
+        this->numberUsers = 0;
+    }
+    ~Library() {
+        delete[] books;
+        delete[] users;
+    }
 
-        this->location=new char[strlen(location)+1];
-        strcpy(this-> location, location);
+    void addBook(const int id, const char* title, const char* author, const char* genre, bool avail) {
+        Book** newBooks = new Book * [numberBooks + 1];
 
-        this->numberUsers=numberUsers;
-
-        this->users=new int [numberUsers];
-        for (int i = 0; i < numberUsers; i++)
-        {
-            users[i]=users[i];
+        for (int i = 0; i < numberBooks; i++) {
+            newBooks[i] = books[i];
         }
-        
+
+        newBooks[numberBooks] = new Book(id, title, author, genre, avail);
+
+        delete[] books;
+        books = newBooks;
+        numberBooks++;
+    }
+
+    void displayBooks() const {
+        for (int i = 0; i < numberBooks; i++) {
+            std::cout << *(books[i]);
+            std::cout << "-----------------" << endl;
+        }
+    }
+
+    void searchBookByID(int id) const {
+        for (int i = 0; i < numberBooks; i++) {
+            if (books[i]->getBookID() == id) {
+                std::cout << *(books[i]);
+                return;
+            }
+        }
+        cout << "Book with ID " << id << " was not found." << endl;
+    }
+
+    void borrowBook(int id) {
+        for (int i = 0; i < numberBooks; i++) {
+            if (books[i]->getBookID() == id) {
+                if (books[i]->checkAvailability()) {
+                    books[i]->markBorrowed();
+                    std::cout << "Book with ID " << id << " has been borrowed." << endl;
+                    numberUsers++;
+                }
+                else {
+                    std::cout << "Book with ID " << id << " is already borrowed." << endl;
+                }
+                return;
+            }
+        }
+        cout << "Book with ID " << id << " was not found." << endl;
+    }
+
+    void returnBook(int id) {
+        for (int i = 0; i < numberBooks; i++) {
+            if (books[i]->getBookID() == id) {
+                if (!books[i]->checkAvailability()) {
+                    books[i]->markReturned();
+                    std::cout << "Book with ID " << id << " has been returned." << endl;
+                }
+                else {
+                    std::cout << "Book with ID " << id << " was not borrowed." << endl;
+                }
+                return;
+            }
+        }
+        cout << "Book with ID " << id << " not found." << endl;
     }
 };
 
@@ -235,6 +293,21 @@ int main(){
     cout << user1 << endl;
     user1.returnedBook(100);
     cout << user1 << endl;
+
+
+    Library lib;
+    lib.addBook(101, "Harry Potter and the philosopher's stone", "J. K. Rowling", "fantasy", true);
+    lib.addBook(102, "1984", "George Orwell", "dystopian fiction", true);
+    lib.addBook(103, "The Great Gatsby", "F. Scott Fitzgerald", "action", true);
+    lib.displayBooks();
+
+    lib.borrowBook(102);
+
+    lib.borrowBook(102);
+
+    lib.returnBook(102);
+
+    lib.searchBookByID(103);
 
    return 0;
 }
